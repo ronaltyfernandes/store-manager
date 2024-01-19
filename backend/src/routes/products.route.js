@@ -15,10 +15,9 @@ rota.get('/:id', async (request, response) => {
 });
 
 rota.post('/', async (request, response) => {
-  console.log(request.body);
-  const name = await request.body;
+  const { name } = request.body;
   const products = await productsModel.insert(name);
-  response.status(201).json(products);
+  response.status(201).json({ id: products, name });
 });
 
 module.exports = rota;
