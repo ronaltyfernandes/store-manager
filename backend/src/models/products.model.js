@@ -37,6 +37,7 @@ const deleteById = async (id) => {
     'DELETE FROM products WHERE id = ?; ',
     [id],
   );
+  console.log(result.affectedRows);
   return camelize(result.affectedRows) || false;
 };
 

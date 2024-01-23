@@ -37,7 +37,7 @@ const deleteById = async (id) => {
     return { 
       status: statusNumbers.erroServer, data: { message: message.productNotFound } }; 
   }
-  return { status: statusNumbers.deleteOk, data: { id } };
+  return { status: statusNumbers.deleteOk, data: { } };
 };
 
 module.exports = { findAll, findById, insert, put, deleteById };

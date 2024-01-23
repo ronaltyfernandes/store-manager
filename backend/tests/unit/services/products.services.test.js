@@ -40,7 +40,7 @@ describe('Realizando testes - PRODUCT SERVICES:', function () {
     expect(status).to.be.deep.equal(statusNumbers.erroServer);
   });
 
-  it('Adicionando valores na lista pruduct por meio de POST', async function () {
+  it('Adicionando valores na lista product por meio de POST', async function () {
     sinon.stub(productsModel, 'insert').returns(productByIdMock[0].id);
     const { status, data } = await productServices.insert(productByIdMock[0].name);
     expect(data).to.be.an('object');
@@ -49,7 +49,7 @@ describe('Realizando testes - PRODUCT SERVICES:', function () {
     expect(status).to.be.deep.equal(statusNumbers.postOk);
   });
 
-  it('Adicionando valores INVALIDOS na lista pruduct por meio de POST', async function () {
+  it('Adicionando valores INVALIDOS na lista product por meio de POST', async function () {
     sinon.stub(productsModel, 'insert').returns(false);
     const { status, data } = await productServices.insert(productByIdMock[0].name);
     expect(data).to.be.an('string');
@@ -58,7 +58,7 @@ describe('Realizando testes - PRODUCT SERVICES:', function () {
     expect(status).to.be.deep.equal(statusNumbers.erroServer);
   });
 
-  it('MODIFICANDO valores na lista pruduct por meio de PUT', async function () {
+  it('MODIFICANDO valores na lista product por meio de PUT', async function () {
     const { name, id } = productByIdMock[0];
     sinon.stub(productsModel, 'put').returns(returnIsertMockValue.insertId);
     const { status, data } = await productServices.put(id, name);
@@ -66,6 +66,36 @@ describe('Realizando testes - PRODUCT SERVICES:', function () {
     expect(data).to.be.deep.equal(productByIdMock[0]);
     expect(status).to.be.an('number');
     expect(status).to.be.deep.equal(statusNumbers.ok);
+  });
+
+  it('MODIFICANDO valores na lista product por meio de PUT INVALIDO', async function () {
+    const { name, id } = productByIdMock[0];
+    sinon.stub(productsModel, 'put').returns(false);
+    const { status, data } = await productServices.put(id, name);
+    expect(data).to.be.an('object');
+    expect(data).to.be.deep.equal({ message: message.productNotFound });
+    expect(status).to.be.an('number');
+    expect(status).to.be.deep.equal(statusNumbers.erroServer);
+  });
+
+  it('DELETANDO valores na lista product por meio de DELETE', async function () {
+    const { id } = productByIdMock[0];
+    sinon.stub(productsModel, 'deleteById').returns(returnIsertMockValue.affectedRows);
+    const { status, data } = await productServices.deleteById(id);
+    expect(data).to.be.an('object');
+    expect(data).to.be.deep.equal({});
+    expect(status).to.be.an('number');
+    expect(status).to.be.deep.equal(statusNumbers.deleteOk);
+  });
+
+  it('DELETANDO valores na lista product por meio de DELETE INCORRETO', async function () {
+    const { id } = productByIdMock[0];
+    sinon.stub(productsModel, 'deleteById').returns(false);
+    const { status, data } = await productServices.deleteById(id);
+    expect(data).to.be.an('object');
+    expect(data).to.be.deep.equal({ message: message.productNotFound });
+    expect(status).to.be.an('number');
+    expect(status).to.be.deep.equal(statusNumbers.erroServer);
   });
 
   // it('Verificando POST de um produto', async function () {
