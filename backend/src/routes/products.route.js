@@ -7,5 +7,6 @@ rota.get('/', productController.findAll);
 rota.get('/:id', productController.findById);
 rota.post('/', nameValid, productController.insert);
 rota.put('/:id', nameValid, productController.put);
+rota.delete('/:id', productController.deleteById);
 
 module.exports = rota;

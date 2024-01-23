@@ -14,6 +14,7 @@ const message = {
 const statusNumbers = {
   ok: 200,
   postOk: 201,
+  deleteOk: 204,
   erro: 400,
   erroServer: 404,
   erroInvalidValue: 422,

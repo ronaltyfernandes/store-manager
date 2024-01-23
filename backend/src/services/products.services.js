@@ -24,4 +24,10 @@ const put = async (id, name) => {
   return { status: statusNumbers.ok, data: { id, name } };
 };
 
-module.exports = { findAll, findById, insert, put };
+const deleteById = async (id) => {
+  const data = await productsModel.deleteById(id);
+  if (data === false) return { status: statusNumbers.erroServer, data: message.productNotFound };
+  return { status: statusNumbers.deleteOk, data: { id } };
+};
+
+module.exports = { findAll, findById, insert, put, deleteById };

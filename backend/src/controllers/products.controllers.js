@@ -26,4 +26,10 @@ const put = async (request, response) => {
   return response.status(status).json(data);
 };
 
-module.exports = { findAll, findById, insert, put };
+const deleteById = async (request, response) => {
+  const { id } = request.params;
+  const { status, data } = await productServices.deleteById(id);
+  return response.status(status).json(data);
+};
+
+module.exports = { findAll, findById, insert, put, deleteById };
