@@ -9,8 +9,6 @@ const findAll = async (_request, response) => {
 const findById = async (request, response) => {
   const { id } = request.params;
   const { status, data } = await productServices.findById(id);
-  console.log(data);
-
   return response.status(status).json(data);
 };
 
@@ -21,4 +19,11 @@ const insert = async (request, response) => {
   return response.status(status).json(data);
 };
 
-module.exports = { findAll, findById, insert };
+const put = async (request, response) => {
+  const { id } = request.params;
+  const { name } = request.body;
+  const { status, data } = await productServices.put(id, name);
+  return response.status(status).json(data);
+};
+
+module.exports = { findAll, findById, insert, put };

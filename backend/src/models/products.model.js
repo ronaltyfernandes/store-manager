@@ -15,6 +15,7 @@ const findById = async (id) => {
 };
 
 const insert = async (name) => {
+  console.log(name);
   const [result] = await connection.execute(
     'INSERT INTO products (name) VALUES (?)',
     [name],
@@ -22,8 +23,17 @@ const insert = async (name) => {
   return camelize(result.insertId) || false;
 };
 
+const put = async (id, name) => {
+  const [result] = await connection.execute(
+    'UPDATE products SET name = ? WHERE id =? ',
+    [name, id],
+  );
+  return camelize(result.affectedRows) || false;
+};
+
 module.exports = {
   findAll,
   findById,
   insert,
+  put,
 };

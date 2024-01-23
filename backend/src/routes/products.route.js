@@ -6,5 +6,6 @@ const { productController } = require('../controllers/index');
 rota.get('/', productController.findAll);
 rota.get('/:id', productController.findById);
 rota.post('/', nameValid, productController.insert);
+rota.put('/:id', nameValid, productController.put);
 
 module.exports = rota;

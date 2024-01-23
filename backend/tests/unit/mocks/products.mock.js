@@ -27,7 +27,7 @@ const productIsertMock = [
   },
   {
     id: 2,
-    name: 'Traje de encolhimento',
+    name: 'Traje',
   },
 ];
 

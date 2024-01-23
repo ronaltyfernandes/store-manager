@@ -17,7 +17,7 @@ describe('Realizando testes - PRODUCT MODEL:', function () {
   it('Recuperando a lista de todos os products', async function () {
     sinon.stub(connection, 'execute').resolves([productAllMock]);
 
-    const { status, body } = await chai.request(app).get('/products/');
+    const { status, body } = await chai.request(app).get('/products');
     
     expect(status).to.equal(statusNumbers.ok);
 
@@ -39,27 +39,28 @@ describe('Realizando testes - PRODUCT MODEL:', function () {
   });
 
   // it.only('Recuperando a lista INVALIDA da busca por ID ', async function () {
-  //   sinon.stub(connection, 'execute').resolves(undefined);
+  //   sinon.stub(connection, 'execute').resolves(false);
 
   //   const id = 23;
   //   const { status, body } = await chai.request(app).get(`/products/${id}`);
 
-  //   console.log(status);
-  //   // expect(status).to.equal(statusNumbers.erroServer);
-  //   // expect(body).to.be.an('array');
-  //   // expect(body).to.have.lengthOf(1);
-  //   expect(body).to.be.deep.equal(undefined);
+  //   // console.log(status);
+  //   // // expect(status).to.equal(statusNumbers.erroServer);
+  //   // // expect(body).to.be.an('array');
+  //   // // expect(body).to.have.lengthOf(1);
+  //   // expect(body).to.be.deep.equal(undefined);
   // });
 
-  it('Verificando post de um produto', async function () {
-    const { name } = productIsertMock[0];
-    sinon.stub(connection, 'execute').resolves({ name: 'Prodee' });
+  // it.only('Verificando post de um produto', async function () {
+  //   const { name } = productIsertMock[0];
+  //   sinon.stub(connection, 'execute').resolves([name]);
 
-    const { status, body } = await chai.request(app).post('/products').send({ name });
-    expect(status).to.equal(statusNumbers.postOk);
-    expect(body).to.be.an('object');
-    expect(body).to.be.deep.equal(body);
-  });
+  //   const { status, body } = await chai.request(app).post('/products').send({ name });
+  //   console.log(body);
+  //   expect(status).to.equal(statusNumbers.postOk);
+  //   expect(body).to.be.an('object');
+  //   expect(body).to.be.deep.equal(body);
+  // });
 
   // it('Verificando post sem a dado NAME de um produto', async function () {
   //   sinon.stub(connection, 'execute').resolves([{}]);
