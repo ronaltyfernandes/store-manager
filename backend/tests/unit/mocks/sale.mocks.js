@@ -28,4 +28,42 @@ const salesByIdMock = [
   },
 ];
 
-module.exports = { salesAllMocks, salesByIdMock };
+const salesPostMockReturn = {
+  id: 3,
+  itemsSold: [
+    {
+      productId: 1,
+      quantity: 1,
+    },
+    {
+      productId: 2,
+      quantity: 5,
+    },
+  ],
+};
+
+const salesPostmockEnv = [
+  {
+    productId: 1,
+    quantity: 1,
+  },
+  {
+    productId: 2,
+    quantity: 5,
+  },
+];
+
+const salesResultHeader = {
+  fieldCount: 0,
+  affectedRows: 1,
+  insertId: 5,
+  info: '',
+  serverStatus: 2,
+  warningStatus: 0,
+};
+
+module.exports = { salesAllMocks, 
+  salesByIdMock,
+  salesPostMockReturn,
+  salesPostmockEnv,
+  salesResultHeader };

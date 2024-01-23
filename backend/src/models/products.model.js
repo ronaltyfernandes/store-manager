@@ -11,11 +11,11 @@ const findById = async (id) => {
     ' SELECT * FROM products WHERE id = ? ORDER BY id', 
     [id],
   );
+  console.log(result);
   return camelize(result) || false;
 };
 
 const insert = async (name) => {
-  console.log(name);
   const [result] = await connection.execute(
     'INSERT INTO products (name) VALUES (?)',
     [name],

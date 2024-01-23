@@ -1,86 +1,97 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const sinon = require('sinon');
-const app = require('../../../src/app');
 const connection = require('../../../src/models/connection.model');
-// const { productsModel } = require('../../../src/models/index.model');
+const { productsModel } = require('../../../src/models/index.model');
 const { productsMock } = require('../mocks/index.mock');
-const { statusNumbers } = require('../../../src/controllers/statusMensages');
 
 const { expect } = chai;
 
 chai.use(chaiHttp);
 
 describe('Realizando testes - PRODUCT MODEL:', function () {
-  const { productAllMock, productByIdMock } = productsMock;
+  const { productAllMock, productByIdMock, productIsertMock, returnIsertMockValue, returnSetHeaderInvalid } = productsMock;
 
   it('Recuperando a lista de todos os products', async function () {
     sinon.stub(connection, 'execute').resolves([productAllMock]);
+    const resultado = await productsModel.findAll();
+    expect(resultado).to.be.an('Array');
 
-    const { status, body } = await chai.request(app).get('/products');
-    
-    expect(status).to.equal(statusNumbers.ok);
-
-    expect(body).to.be.an('Array');
-    expect(body).to.have.lengthOf(3);
-    expect(body).to.be.deep.equal(productAllMock);
+    expect(resultado).to.be.deep.equal(productAllMock);
   });
 
   it('Recuperando a lista da busca por apenas um product por meio do id', async function () {
-    sinon.stub(connection, 'execute').resolves([[productByIdMock]]);
-
+    sinon.stub(connection, 'execute').resolves([productByIdMock]);
     const id = 1;
-    const { status, body } = await chai.request(app).get(`/products/${id}`);
+    const resultado = await productsModel.findById(id);
 
-    expect(status).to.equal(statusNumbers.ok);
-    expect(body).to.be.an('array');
-    expect(body).to.have.lengthOf(1);
-    expect(body).to.be.deep.equal(productByIdMock);
+    expect(resultado).to.be.an('object');
+    expect(resultado).to.be.deep.equal(productByIdMock[0]);
   });
 
-  // it.only('Recuperando a lista INVALIDA da busca por ID ', async function () {
-  //   sinon.stub(connection, 'execute').resolves(false);
+  it('Recuperando a lista INVALIDA da busca por ID ', async function () {
+    sinon.stub(connection, 'execute').resolves([[undefined]]);
 
-  //   const id = 23;
-  //   const { status, body } = await chai.request(app).get(`/products/${id}`);
+    const id = 23;
+    const resultado = await productsModel.findById(id);
 
-  //   // console.log(status);
-  //   // // expect(status).to.equal(statusNumbers.erroServer);
-  //   // // expect(body).to.be.an('array');
-  //   // // expect(body).to.have.lengthOf(1);
-  //   // expect(body).to.be.deep.equal(undefined);
-  // });
+    expect(resultado).to.equal(false);
+    expect(resultado).to.be.an('boolean');
+  });
 
-  // it.only('Verificando post de um produto', async function () {
-  //   const { name } = productIsertMock[0];
-  //   sinon.stub(connection, 'execute').resolves([name]);
+  it('Verificando POST de um produto', async function () {
+    const { name } = productIsertMock[0];
+    sinon.stub(connection, 'execute').resolves([returnIsertMockValue]);
+    const resultado = await productsModel.insert(name);
 
-  //   const { status, body } = await chai.request(app).post('/products').send({ name });
-  //   console.log(body);
-  //   expect(status).to.equal(statusNumbers.postOk);
-  //   expect(body).to.be.an('object');
-  //   expect(body).to.be.deep.equal(body);
-  // });
+    expect(resultado).to.equal(returnIsertMockValue.insertId);
+    expect(resultado).to.be.an('number');
+  });
 
-  // it('Verificando post sem a dado NAME de um produto', async function () {
-  //   sinon.stub(connection, 'execute').resolves([{}]);
+  it('Verificando POST de um produto INVALIDO', async function () {
+    const { name } = productByIdMock[0];
+    sinon.stub(connection, 'execute').resolves([returnSetHeaderInvalid]);
+    const resultado = await productsModel.insert(name);
 
-  //   const { status, body } = await chai.request(app).post('/products');
+    expect(resultado).to.equal(false);
+    expect(resultado).to.be.an('boolean');
+  });
 
-  //   expect(status).to.equal(statusNumbers.erro);
-  //   expect(body).to.be.an('object');
-  //   expect(body).to.be.deep.equal(body);
-  // });
+  it('Verificando PUT de um produto', async function () {
+    const { name, id } = productByIdMock[0];
+    sinon.stub(connection, 'execute').resolves([returnIsertMockValue]);
+    const resultado = await productsModel.put(id, name);
 
-  // it('Verificando post com o  dado NAME menor que 5 caracteres de um produto', async function () {
-  //   sinon.stub(connection, 'execute').resolves([{}]);
+    expect(resultado).to.equal(returnIsertMockValue.affectedRows);
+    expect(resultado).to.be.an('number');
+  });
 
-  //   const { status, body } = await chai.request(app).post('/products').send;
+  it('Verificando PUT de um produto INVALIDO', async function () {
+    const { name, id } = productByIdMock[0];
+    sinon.stub(connection, 'execute').resolves([returnSetHeaderInvalid]);
+    const resultado = await productsModel.put(id, name);
 
-  //   expect(status).to.equal(statusNumbers.erro);
-  //   expect(body).to.be.an('object');
-  //   expect(body).to.be.deep.equal(body);
-  // });
+    expect(resultado).to.equal(false);
+    expect(resultado).to.be.an('boolean');
+  });
+
+  it('Verificando DELETE de um produto', async function () {
+    const { id } = productByIdMock[0];
+    sinon.stub(connection, 'execute').resolves([returnIsertMockValue]);
+    const resultado = await productsModel.deleteById(id);
+
+    expect(resultado).to.equal(returnIsertMockValue.affectedRows);
+    expect(resultado).to.be.an('number');
+  });
+
+  it('Verificando DELETE de um produto INVALIDO', async function () {
+    const { id } = productByIdMock[0];
+    sinon.stub(connection, 'execute').resolves([returnSetHeaderInvalid]);
+    const resultado = await productsModel.deleteById(id);
+
+    expect(resultado).to.equal(false);
+    expect(resultado).to.be.an('boolean');
+  });
 
   afterEach(function () {
     sinon.restore();

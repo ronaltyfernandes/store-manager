@@ -26,7 +26,7 @@ const insert = async (valores) => {
       [insertId, data.productId, data.quantity],
     )),
   );
-  return ({ id: insertId }) || false;
+  return { id: insertId };
 };
 
 module.exports = {
