@@ -1,36 +1,48 @@
+const chai = require('chai');
+const chaiHttp = require('chai-http');
 const { expect } = require('chai');
 const sinon = require('sinon');
+const app = require('../../../src/app');
 const connection = require('../../../src/models/connection.model');
-const { salesModel } = require('../../../src/models/index.model');
 const { salesMocks } = require('../mocks/index.mock');
+const { statusNumbers } = require('../../../src/controllers/statusMensages');
 
-describe('Realizando testes - DRIVER MODEL:', function () {
-  it('Recuperando a lista de todos os products', async function () {
+chai.use(chaiHttp);
+
+describe('Realizando testes - SALES MODEL:', function () {
+  it('Recuperando a lista de todos os sales', async function () {
     sinon.stub(connection, 'execute').resolves([salesMocks.salesAllMocks]);
+    const { status, body } = await chai.request(app).get('/sales');
     
-    const data = await salesModel.findAll();
-    expect(data).to.be.an('array');
-    expect(data).to.have.lengthOf(3);
-    expect(data).to.be.deep.equal(salesMocks.salesAllMocks);
+    expect(status).to.equal(statusNumbers.ok);
+    expect(body).to.be.an('array');
+    expect(body).to.have.lengthOf(salesMocks.salesAllMocks.length);
+    expect(body).to.be.deep.equal(salesMocks.salesAllMocks);
   });
 
-  it('Recuperando a lista da busca por apenas um product por meio do id', async function () {
+  it('Recuperando a lista da busca por sales por meio do id', async function () {
     sinon.stub(connection, 'execute').resolves([salesMocks.salesByIdMock]);
 
     const id = 1;
-    
-    const data = await salesModel.findById(id);
-    expect(data).to.be.an('array');
-    expect(data).to.have.lengthOf(2);
-    expect(data).to.be.deep.equal(salesMocks.salesByIdMock);
+    const { status, body } = await chai.request(app).get(`/sales/${id}`);
+
+    expect(status).to.equal(statusNumbers.ok);
+    expect(body).to.be.an('array');
+    expect(body).to.have.lengthOf(salesMocks.salesByIdMock.length);
+    expect(body).to.be.deep.equal(salesMocks.salesByIdMock);
   });
 
-  // it('Recuperando driver por id', async function () {
-  //   sinon.stub(connection, 'execute').resolves([dataMockDriversList]);
-  //   const driverId = 1;
-  //   const data = await driver.findByIdDriver(driverId);
-  //   expect(data).to.be.an('array');
-  //   expect(data).to.be.deep.equal(dataMockDriversList);
+  // it('Recuperando a lista INVALIDA sales da busca por ID ', async function () {
+  //   sinon.stub(connection, 'execute').resolves(false);
+
+  //   const id = 23;
+  //   const { status, body } = await chai.request(app).get(`/products/${id}`);
+
+  //   console.log(body);
+  //   expect(status).to.equal(statusNumbers.erroServer);
+  //   // expect(body).to.be.an('array');
+  //   // expect(body).to.have.lengthOf(1);
+  //   expect(body).to.be.deep.equal(false);
   // });
 
   afterEach(function () {

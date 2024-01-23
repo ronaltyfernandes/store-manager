@@ -15,10 +15,22 @@ const findById = async (id) => {
   FROM sales INNER JOIN sales_products ON sales.id = sale_id 
   WHERE sale_id= ?
   ORDER BY sale_id, product_id `, [id]);
-  return camelize(result) || false;
+  return camelize(result);
+};
+
+const insert = async (valores) => {
+  const [{ insertId }] = await connection.execute('INSERT INTO sales () VALUES ();');
+  await Promise.all(
+    valores.map(async (data) => connection.execute(
+      'INSERT INTO sales_products (sale_id,product_Id, quantity ) VALUES (?,?,?)',
+      [insertId, data.productId, data.quantity],
+    )),
+  );
+  return ({ id: insertId }) || false;
 };
 
 module.exports = {
   findAll,
   findById,
+  insert,
 };

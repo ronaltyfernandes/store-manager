@@ -1,23 +1,10 @@
 const rota = require('express').Router();
+const { nameValid } = require('../middlewares/products.middlewares');
 
-const { productsModel } = require('../models/index.model');
+const { productController } = require('../controllers/index');
 
-rota.get('/', async (_request, response) => {
-  const products = await productsModel.findAll();
-  response.status(200).json(products);
-});
-
-rota.get('/:id', async (request, response) => {
-  const { id } = request.params;
-  const products = await productsModel.findById(id);
-  if (!products) return request.status(404).json({ message: 'Passenger not found' });
-  response.status(200).json(products);
-});
-
-rota.post('/', async (request, response) => {
-  const { name } = request.body;
-  const products = await productsModel.insert(name);
-  response.status(201).json({ id: products, name });
-});
+rota.get('/', productController.findAll);
+rota.get('/:id', productController.findById);
+rota.post('/', nameValid, productController.insert);
 
 module.exports = rota;

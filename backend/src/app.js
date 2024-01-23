@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const rota = require('./routes/index.route');
+const { productsRoutes, salesRoutes } = require('./routes/index.route');
 
 // Analisa o corpo da solicitação como JSON
 
@@ -13,8 +13,8 @@ app.get('/', (_request, response) => {
 
 app.use(bodyParser.json());
 
-app.use('/products', rota.productsRoutes);
+app.use('/products', productsRoutes);
 
-app.use('/sales', rota.salesRoutes);
+app.use('/sales', salesRoutes);
 
 module.exports = app;

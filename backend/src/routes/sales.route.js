@@ -1,17 +1,12 @@
 const rota = require('express').Router();
 
-const { salesModel } = require('../models/index.model');
+const { salesController } = require('../controllers');
+// const { salesMiddlleweres } = require('../middlewares/index');
 
-rota.get('/', async (_request, response) => {
-  const products = await salesModel.findAll();
-  response.status(200).json(products);
-});
+// const { validProductId, validQuantity } = salesMiddlleweres;
 
-rota.get('/:id', async (request, response) => {
-  const { id } = request.params;
-  const products = await salesModel.findById(id);
-  if (!products) return request.status(404).json({ message: 'Passenger not found' });
-  response.status(200).json(products);
-});
+rota.get('/', salesController.findAll);
+rota.get('/:id', salesController.findById);
+rota.post('/', salesController.insert);
 
 module.exports = rota;

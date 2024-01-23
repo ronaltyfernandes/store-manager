@@ -1,4 +1,4 @@
-const productsAllMock = require('./products.mock');
+const productsMock = require('./products.mock');
 const salesMocks = require('./sale.mocks');
 
-module.exports = { productsAllMock, salesMocks };
+module.exports = { productsMock, salesMocks };
