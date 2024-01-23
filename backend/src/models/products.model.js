@@ -3,6 +3,7 @@ const connection = require('./connection.model');
 
 const findAll = async () => { 
   const [result] = await connection.execute(' SELECT * FROM products ORDER BY id');
+  console.log(result);
   return camelize(result);
 };
 
