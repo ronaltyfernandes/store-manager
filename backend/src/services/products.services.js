@@ -8,7 +8,10 @@ const findAll = async () => {
 
 const findById = async (id) => {
   const data = await productsModel.findById(id);
-  if (data === false) return { status: statusNumbers.erroServer, data: message.productNotFound };
+  if (data === false) {
+    return { 
+      status: statusNumbers.erroServer, data: { message: message.productNotFound } }; 
+  }
   return { status: statusNumbers.ok, data };
 };
 
@@ -20,13 +23,19 @@ const insert = async (name) => {
 
 const put = async (id, name) => {
   const data = await productsModel.put(id, name);
-  if (data === false) return { status: statusNumbers.erroServer, data: message.productNotFound };
-  return { status: statusNumbers.ok, data: { id, name } };
+  if (data === false) {
+    return {
+      status: statusNumbers.erroServer, data: { message: message.productNotFound } }; 
+  }
+  return { status: statusNumbers.ok, data: { id: parseFloat(id), name } };
 };
 
 const deleteById = async (id) => {
   const data = await productsModel.deleteById(id);
-  if (data === false) return { status: statusNumbers.erroServer, data: message.productNotFound };
+  if (data === false) {
+    return { 
+      status: statusNumbers.erroServer, data: { message: message.productNotFound } }; 
+  }
   return { status: statusNumbers.deleteOk, data: { id } };
 };
 

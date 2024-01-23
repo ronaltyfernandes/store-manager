@@ -3,7 +3,7 @@ const message = {
   NameIsrequired: '"name" is required',
   invalidName: '"name" length must be at least 5 characters long', 
   passagerNotFoud: 'Passenger not found',
-  SalesNotFoud: 'Sales not found',
+  SalesNotFoud: 'Sale not found',
   productRequired: '"productId" is required',
   quantityRequired: '"quantity" is required', 
   invalidQuantity: '"quantity" must be greater than or equal to 1', 

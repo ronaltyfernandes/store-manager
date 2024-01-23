@@ -8,7 +8,10 @@ const findAll = async () => {
 
 const findById = async (id) => {
   const data = await salesModel.findById(id);
-  if (data.length < 1) return { status: statusNumbers.erroServer, data: message.SalesNotFoud };
+  if (data.length < 1) {
+    return { 
+      status: statusNumbers.erroServer, data: { message: message.SalesNotFoud } }; 
+  }
   return { status: statusNumbers.ok, data };
 };
 

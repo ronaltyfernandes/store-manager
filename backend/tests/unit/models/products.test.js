@@ -12,7 +12,7 @@ const { expect } = chai;
 chai.use(chaiHttp);
 
 describe('Realizando testes - PRODUCT MODEL:', function () {
-  const { productAllMock, productByIdMock, productIsertMock } = productsMock;
+  const { productAllMock, productByIdMock } = productsMock;
 
   it('Recuperando a lista de todos os products', async function () {
     sinon.stub(connection, 'execute').resolves([productAllMock]);
