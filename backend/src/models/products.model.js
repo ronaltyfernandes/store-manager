@@ -3,7 +3,6 @@ const connection = require('./connection.model');
 
 const findAll = async () => { 
   const [result] = await connection.execute(' SELECT * FROM products ORDER BY id');
-  console.log(result);
   return camelize(result);
 };
 
@@ -12,7 +11,6 @@ const findById = async (id) => {
     ' SELECT * FROM products WHERE id = ? ORDER BY id', 
     [id],
   );
-  console.log(result);
   return camelize(result) || false;
 };
 
@@ -37,7 +35,6 @@ const deleteById = async (id) => {
     'DELETE FROM products WHERE id = ?; ',
     [id],
   );
-  console.log(result.affectedRows);
   return camelize(result.affectedRows) || false;
 };
 

@@ -8,7 +8,7 @@ const findAll = async () => {
 
 const findById = async (id) => {
   const data = await salesModel.findById(id);
-  if (data.length < 1) {
+  if (data.length <= 0) {
     return { 
       status: statusNumbers.erroServer, data: { message: message.SalesNotFoud } }; 
   }
@@ -17,7 +17,7 @@ const findById = async (id) => {
 
 const insert = async (values) => {
   const data = await salesModel.insert(values);
-  if (!data) return { status: statusNumbers.erroServer, data: message.invalidName };
+  if (!data) return { status: statusNumbers.erroServer, data: { message: message.invalidName } };
   return { status: statusNumbers.postOk, data: { id: data.id, itemsSold: values } };
 };
 

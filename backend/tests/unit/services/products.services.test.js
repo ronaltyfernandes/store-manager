@@ -23,10 +23,10 @@ describe('Realizando testes - PRODUCT SERVICES:', function () {
   });
 
   it('Recuperando por ID da lista products', async function () {
-    sinon.stub(productsModel, 'findById').returns(productByIdMock);
-    const { status, data } = await productServices.findById(productByIdMock.id);
-    expect(data).to.be.an('Array');
-    expect(data).to.be.deep.equal(productByIdMock);
+    sinon.stub(productsModel, 'findById').returns(productByIdMock[0]);
+    const { status, data } = await productServices.findById(productByIdMock[0].id);
+    expect(data).to.be.an('object');
+    expect(data).to.be.deep.equal(productByIdMock[0]);
     expect(status).to.be.an('number');
     expect(status).to.be.deep.equal(statusNumbers.ok);
   });
@@ -97,60 +97,6 @@ describe('Realizando testes - PRODUCT SERVICES:', function () {
     expect(status).to.be.an('number');
     expect(status).to.be.deep.equal(statusNumbers.erroServer);
   });
-
-  // it('Verificando POST de um produto', async function () {
-  //   const { name } = productIsertMock[0];
-  //   sinon.stub(connection, 'execute').resolves([returnIsertMockValue]);
-  //   const resultado = await productsModel.insert(name);
-
-  //   expect(resultado).to.equal(returnIsertMockValue.insertId);
-  //   expect(resultado).to.be.an('number');
-  // });
-
-  // it('Verificando POST de um produto INVALIDO', async function () {
-  //   const { name } = productByIdMock[0];
-  //   sinon.stub(connection, 'execute').resolves([returnSetHeaderInvalid]);
-  //   const resultado = await productsModel.insert(name);
-
-  //   expect(resultado).to.equal(false);
-  //   expect(resultado).to.be.an('boolean');
-  // });
-
-  // it('Verificando PUT de um produto', async function () {
-  //   const { name, id } = productByIdMock[0];
-  //   sinon.stub(connection, 'execute').resolves([returnIsertMockValue]);
-  //   const resultado = await productsModel.put(id, name);
-
-  //   expect(resultado).to.equal(returnIsertMockValue.affectedRows);
-  //   expect(resultado).to.be.an('number');
-  // });
-
-  // it('Verificando PUT de um produto INVALIDO', async function () {
-  //   const { name, id } = productByIdMock[0];
-  //   sinon.stub(connection, 'execute').resolves([returnSetHeaderInvalid]);
-  //   const resultado = await productsModel.put(id, name);
-
-  //   expect(resultado).to.equal(false);
-  //   expect(resultado).to.be.an('boolean');
-  // });
-
-  // it('Verificando DELETE de um produto', async function () {
-  //   const { id } = productByIdMock[0];
-  //   sinon.stub(connection, 'execute').resolves([returnIsertMockValue]);
-  //   const resultado = await productsModel.deleteById(id);
-
-  //   expect(resultado).to.equal(returnIsertMockValue.affectedRows);
-  //   expect(resultado).to.be.an('number');
-  // });
-
-  // it('Verificando DELETE de um produto INVALIDO', async function () {
-  //   const { id } = productByIdMock[0];
-  //   sinon.stub(connection, 'execute').resolves([returnSetHeaderInvalid]);
-  //   const resultado = await productsModel.deleteById(id);
-
-  //   expect(resultado).to.equal(false);
-  //   expect(resultado).to.be.an('boolean');
-  // });
 
   afterEach(function () {
     sinon.restore();

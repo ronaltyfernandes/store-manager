@@ -2,9 +2,8 @@ const { productsModel } = require('../models/index.model');
 const { message, statusNumbers } = require('../controllers/statusMensages');
 
 const findAll = async () => {
-  console.log('isso');
   const data = await productsModel.findAll();
-  return { status: 200, data };
+  return { status: statusNumbers.ok, data };
 };
 
 const findById = async (id) => {
