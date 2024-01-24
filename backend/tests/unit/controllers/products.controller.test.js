@@ -6,7 +6,13 @@ const { productServices } = require('../../../src/services/index');
 const { controllersMocks } = require('../mocks/index.mock');
 const { statusNumbers } = require('../../../src/controllers/statusMensages');
 
-const { findAllControllerMock, findByIdControllerMock, insertControllerMock } = controllersMocks;
+const { 
+  findAllControllerMock,
+  findByIdControllerMock, 
+  insertControllerMock, 
+  findByIdControllerMockErro,
+  putControllerMock, 
+  deleteControllerMock } = controllersMocks;
 
 const { expect } = chai;
 
@@ -49,6 +55,24 @@ describe('Realizando testes - PRODUCT SERVICES:', function () {
     expect(response.json).to.have.been.calledWith(findByIdControllerMock.data);
   });
 
+  it('Recuperando a lista products com um ID especifico INVALIDO', async function () {
+    sinon.stub(productServices, 'findById').returns(findByIdControllerMockErro);
+
+    const request = {
+      params: { id: 99 },
+      body: { },
+    };
+    const response = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productController.findById(request, response);
+
+    expect(response.status).to.have.been.calledWith(statusNumbers.erroServer);
+    expect(response.json).to.have.been.calledWith(findByIdControllerMockErro.data);
+  });
+
   it('INSERINDO a lista products', async function () {
     sinon.stub(productServices, 'insert').returns(insertControllerMock);
 
@@ -68,7 +92,7 @@ describe('Realizando testes - PRODUCT SERVICES:', function () {
   });
 
   it('MODIFICANDO a lista products com PUT', async function () {
-    sinon.stub(productServices, 'insert').returns(findByIdControllerMock);
+    sinon.stub(productServices, 'put').returns(putControllerMock);
 
     const request = {
       params: { id: 1 },
@@ -79,29 +103,29 @@ describe('Realizando testes - PRODUCT SERVICES:', function () {
       json: sinon.stub(),
     };
 
-    await productController.insert(request, response);
+    await productController.put(request, response);
 
     expect(response.status).to.have.been.calledWith(statusNumbers.ok);
-    expect(response.json).to.have.been.calledWith(findByIdControllerMock.data);
+    expect(response.json).to.have.been.calledWith(putControllerMock.data);
   });
 
-  // it('MODIFICANDO a lista products com PUT', async function () {
-  //   sinon.stub(productServices, 'insert').returns(findByIdControllerMock);
+  it('DELETANDO item de products com DELETE', async function () {
+    sinon.stub(productServices, 'deleteById').returns(deleteControllerMock);
 
-  //   const request = {
-  //     params: { id: 1 },
-  //     body: { name: 'exemploX' },
-  //   };
-  //   const response = {
-  //     status: sinon.stub().returnsThis(),
-  //     json: sinon.stub(),
-  //   };
+    const request = {
+      params: { id: 1 },
+      body: { name: 'exemploX' },
+    };
+    const response = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
 
-  //   await productController.insert(request, response);
+    await productController.deleteById(request, response);
 
-  //   expect(response.status).to.have.been.calledWith(statusNumbers.ok);
-  //   expect(response.json).to.have.been.calledWith(findByIdControllerMock.data);
-  // });
+    expect(response.status).to.have.been.calledWith(statusNumbers.deleteOk);
+    expect(response.json).to.have.been.calledWith(deleteControllerMock.data);
+  });
 
   afterEach(function () {
     sinon.restore();
