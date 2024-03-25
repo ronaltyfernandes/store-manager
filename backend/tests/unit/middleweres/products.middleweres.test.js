@@ -7,8 +7,8 @@ const { expect } = chai;
 
 chai.use(sinonChai);
 
-describe('Realizando testes - middle SERVICES:', function () {
-  it('Recuperando a lista de TODOS os products', function () {
+describe('Realizando testes - middleweres :', function () {
+  it('verifica exemplo VERDADEIRO para name valid', function () {
     const request = {
       params: { },
       body: { name: 'exemploXYZ' },
@@ -20,6 +20,20 @@ describe('Realizando testes - middle SERVICES:', function () {
     productsMiddlleweres.nameValid(request, response, next);
     
     expect(next.calledOnce).to.equal(true);
+  });
+
+  it('verifica exemplo FALSO para name valid', function () {
+    const request = {
+      params: { },
+      body: { name: 'INVA' },
+    };
+    const next = sinon.stub();
+    const response = {
+    };
+
+    productsMiddlleweres.nameValid(request, response, next);
+    
+    expect(next.calledOnce).to.equal(false);
   });
 
   afterEach(function () {
